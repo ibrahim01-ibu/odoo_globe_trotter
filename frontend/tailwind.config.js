@@ -7,57 +7,81 @@ export default {
     theme: {
         extend: {
             colors: {
-                // Primary - Midnight Blue (navbar, primary buttons, active states)
-                primary: '#0F2A44',
-                'primary-light': '#1a3a5c',
-                'primary-dark': '#091c2e',
+                // Primary - Aqua / Teal (Brand Identity)
+                primary: {
+                    DEFAULT: '#2FA4A9', // Main Brand Color
+                    light: '#5BC2C6',
+                    dark: '#237D81',
+                    50: '#F0FDFA',
+                    100: '#CCFBF1',
+                    500: '#2FA4A9',
+                    600: '#237D81',
+                    700: '#1A6165',
+                },
 
-                // Secondary - Slate Blue (secondary buttons, links, section headers)
-                secondary: '#3B5B8A',
-                'secondary-light': '#4a6d9e',
-                'secondary-dark': '#2d4a73',
+                // Secondary - Slate / Cool Gray (Text & UI Elements)
+                secondary: {
+                    DEFAULT: '#64748B',
+                    light: '#94A3B8',
+                    dark: '#475569',
+                    50: '#F8FAFC',
+                    100: '#F1F5F9',
+                    900: '#0F172A',
+                },
 
-                // Accent - Teal Green (add activity, success, publish)
-                accent: '#2FA4A9',
-                'accent-light': '#3bb8bd',
-                'accent-dark': '#258a8e',
+                // Accent - Solar Amber (Highlights, Calls to Action)
+                accent: {
+                    DEFAULT: '#F59E0B',
+                    light: '#FBBF24',
+                    dark: '#D97706',
+                },
 
                 // Backgrounds
-                bg: '#F7F9FC',
-                card: '#FFFFFF',
+                bg: {
+                    DEFAULT: '#F0F4F8', // Main app background (Cool Blue-Gray)
+                    paper: '#FFFFFF',   // Card background
+                    subtle: '#E2E8F0',  // Sidebar/Header variants
+                },
 
-                // Text
-                'text-primary': '#1E293B',
-                'text-secondary': '#64748B',
-                'text-muted': '#94A3B8',
-
-                // Semantic
+                // Functional
+                success: '#10B981',
                 warning: '#F59E0B',
                 danger: '#EF4444',
-                success: '#22C55E',
-
-                // City tinting for calendar (translucent)
-                'city-1': 'rgba(59, 91, 138, 0.15)',
-                'city-2': 'rgba(47, 164, 169, 0.15)',
-                'city-3': 'rgba(15, 42, 68, 0.12)',
+                info: '#3B82F6',
             },
             fontFamily: {
                 sans: ['Inter', 'system-ui', 'sans-serif'],
             },
+            boxShadow: {
+                'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                'card': '0 0 0 1px rgba(0,0,0,0.03), 0 2px 8px rgba(0,0,0,0.04)',
+                'card-hover': '0 0 0 1px rgba(0,0,0,0.03), 0 12px 24px -4px rgba(0,0,0,0.08)',
+                'floating': '0 20px 40px -8px rgba(0,0,0,0.12)',
+            },
+            borderRadius: {
+                'xl': '1rem',
+                '2xl': '1.5rem',
+                '3xl': '2rem',
+            },
             animation: {
-                'fade-in': 'fadeIn 0.5s ease-out',
-                'slide-up': 'slideUp 0.3s ease-out',
-                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'fade-in': 'fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                'slide-up': 'slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'float': 'float 6s ease-in-out infinite',
             },
             keyframes: {
                 fadeIn: {
-                    '0%': { opacity: '0' },
-                    '100%': { opacity: '1' },
-                },
-                slideUp: {
                     '0%': { opacity: '0', transform: 'translateY(10px)' },
                     '100%': { opacity: '1', transform: 'translateY(0)' },
                 },
+                slideUp: {
+                    '0%': { opacity: '0', transform: 'translateY(20px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' },
+                },
+                float: {
+                    '0%, 100%': { transform: 'translateY(0)' },
+                    '50%': { transform: 'translateY(-10px)' },
+                }
             },
         },
     },

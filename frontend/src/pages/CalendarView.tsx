@@ -35,14 +35,14 @@ export default function CalendarView() {
     if (isLoading) {
         return (
             <div className="animate-pulse space-y-6">
-                <div className="h-8 bg-gray-100 rounded w-1/3" />
+                <div className="h-6 bg-slate-100 rounded w-1/4" />
                 <div className="card h-96" />
             </div>
         )
     }
 
     if (!trip) {
-        return <div className="text-center text-text-secondary py-12">Trip not found</div>
+        return <div className="text-center text-slate-500 py-12">Trip not found</div>
     }
 
     // Build calendar events from activities and stops
@@ -86,25 +86,25 @@ export default function CalendarView() {
         <div className="animate-fade-in">
             {/* Header */}
             <div className="flex items-center gap-4 mb-6">
-                <Link to={`/trips/${id}`} className="icon-btn">
+                <Link to={`/trips/${id}`} className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                 </Link>
                 <div>
-                    <h1 className="text-2xl font-bold text-text-primary">{trip.name} - Calendar</h1>
-                    <p className="text-text-secondary text-sm">View your trip schedule</p>
+                    <h1 className="text-xl font-semibold text-slate-800">{trip.name}</h1>
+                    <p className="text-slate-500 text-sm">Calendar View</p>
                 </div>
             </div>
 
             {/* Legend */}
             <div className="card p-4 mb-6">
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap gap-6">
                     <div className="flex items-center gap-2 text-sm">
-                        <MapPin className="w-4 h-4 text-text-muted" />
-                        <span className="text-text-secondary">Cities:</span>
+                        <MapPin className="w-4 h-4 text-slate-400" />
+                        <span className="text-slate-600 font-medium">Cities:</span>
                         {trip.stops.map((stop, index) => (
                             <span
                                 key={stop.id}
-                                className="px-2 py-0.5 rounded-full text-xs font-medium"
+                                className="px-2 py-0.5 rounded text-xs font-medium"
                                 style={{
                                     backgroundColor: CITY_TINTS[index % CITY_TINTS.length],
                                     color: CITY_TEXT_COLORS[index % CITY_TEXT_COLORS.length],
@@ -114,11 +114,11 @@ export default function CalendarView() {
                             </span>
                         ))}
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-text-secondary">
-                        <span>Activities:</span>
-                        {['Sightseeing', 'Food', 'Culture', 'Adventure', 'Nightlife'].map(cat => (
+                    <div className="flex items-center gap-3 text-sm text-slate-500">
+                        <span className="font-medium text-slate-600">Activities:</span>
+                        {['Sightseeing', 'Food', 'Culture', 'Adventure'].map(cat => (
                             <span key={cat} className="flex items-center gap-1">
-                                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: getCategoryColor(cat) }} />
+                                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: getCategoryColor(cat) }} />
                                 {cat}
                             </span>
                         ))}

@@ -2,7 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { publicApi, tripsApi } from '../services/api'
 import { Trip } from '../types'
-import { Globe, MapPin, Calendar, Clock, DollarSign, Copy, Check } from 'lucide-react'
+import { Globe, Calendar, Clock, Copy, Check } from 'lucide-react'
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -52,108 +52,121 @@ export default function PublicTrip() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-bg flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="w-12 h-12 rounded-full border-4 border-slate-200 border-t-slate-500 animate-spin"></div>
+                    <p className="text-slate-500">Loading trip...</p>
+                </div>
             </div>
         )
     }
 
     if (error || !data) {
         return (
-            <div className="min-h-screen bg-bg flex items-center justify-center">
-                <div className="card p-8 text-center shadow-lg">
-                    <Globe className="w-16 h-16 text-text-muted mx-auto mb-4" />
-                    <h2 className="text-xl font-bold text-text-primary mb-2">Trip Not Found</h2>
-                    <p className="text-text-secondary">This trip may be private or doesn't exist.</p>
+            <div className="min-h-screen flex items-center justify-center p-4">
+                <div className="card p-12 text-center shadow-2xl max-w-lg w-full bg-white/80 backdrop-blur-xl">
+                    <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Globe className="w-10 h-10 text-slate-400" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-slate-800 mb-3">Trip Not Found</h2>
+                    <p className="text-slate-500 text-lg">This journey may be private or no longer exists.</p>
                 </div>
             </div>
         )
     }
 
     return (
-        <div className="min-h-screen bg-bg p-4 md:p-8">
-            <div className="max-w-4xl mx-auto animate-fade-in">
+        <div className="min-h-screen bg-slate-50 p-4 md:p-8">
+            <div className="max-w-4xl mx-auto animate-fade-in space-y-6">
                 {/* Header */}
-                <div className="card p-6 mb-6 shadow-lg">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="card p-6">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                         <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center">
-                                <Globe className="w-7 h-7 text-white" />
+                            <div className="w-12 h-12 rounded-xl bg-slate-100 flex items-center justify-center">
+                                <Globe className="w-6 h-6 text-slate-600" />
                             </div>
                             <div>
-                                <h1 className="text-2xl font-bold text-text-primary">{data.name}</h1>
-                                <p className="text-text-secondary">
-                                    {formatDate(data.startDate)} - {formatDate(data.endDate)}
+                                <h1 className="text-xl font-semibold text-slate-800">{data.name}</h1>
+                                <p className="text-slate-500 text-sm">
+                                    {formatDate(data.startDate)} – {formatDate(data.endDate)}
                                 </p>
                             </div>
                         </div>
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 w-full md:w-auto">
                             <button
                                 onClick={copyUrl}
-                                className="btn-secondary flex items-center gap-2 px-4 py-2"
+                                className="btn-secondary flex-1 md:flex-none flex items-center justify-center gap-2"
                             >
-                                {copied ? <Check className="w-4 h-4 text-success" /> : <Copy className="w-4 h-4" />}
-                                {copied ? 'Copied!' : 'Share'}
+                                {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                                {copied ? 'Copied' : 'Share'}
                             </button>
                             {isAuthenticated && (
                                 <button
                                     onClick={() => copyMutation.mutate()}
                                     disabled={copyMutation.isPending}
-                                    className="btn-primary"
+                                    className="btn-primary flex-1 md:flex-none"
                                 >
-                                    {copyMutation.isPending ? 'Copying...' : 'Copy to My Trips'}
+                                    {copyMutation.isPending ? 'Copying...' : 'Clone'}
                                 </button>
                             )}
                         </div>
                     </div>
                     {data.description && (
-                        <p className="text-text-secondary mt-4 border-t border-gray-100 pt-4">{data.description}</p>
+                        <p className="mt-4 pt-4 border-t border-slate-100 text-slate-600">{data.description}</p>
                     )}
                 </div>
 
                 {/* Itinerary */}
-                <div className="space-y-6">
+                <div className="space-y-4">
                     {data.stops?.map((stop, index) => (
-                        <div key={stop.id} className="card p-6">
-                            <div className="flex items-center gap-4 mb-4">
-                                <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-lg font-bold text-secondary">
-                                    {index + 1}
-                                </div>
-                                <div>
-                                    <h2 className="text-xl font-semibold text-text-primary">{stop.city.name}</h2>
-                                    <p className="text-text-secondary text-sm">
-                                        {stop.city.country} • {formatDate(stop.startDate)} - {formatDate(stop.endDate)}
-                                    </p>
+                        <div key={stop.id} className="card overflow-hidden">
+                            {/* Stop Header */}
+                            <div className="p-4 bg-slate-50 border-b border-slate-100">
+                                <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-lg bg-slate-200 text-slate-600 flex items-center justify-center text-sm font-semibold">
+                                        {index + 1}
+                                    </div>
+                                    <div>
+                                        <h2 className="font-medium text-slate-800">
+                                            {stop.city.name}
+                                            <span className="text-slate-400 font-normal ml-1">({stop.city.country})</span>
+                                        </h2>
+                                        <p className="text-sm text-slate-500">
+                                            {formatDate(stop.startDate)} – {formatDate(stop.endDate)}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="space-y-4">
+                            <div className="p-4 space-y-4">
                                 {getDatesBetween(stop.startDate.split('T')[0], stop.endDate.split('T')[0]).map((date) => {
                                     const dayActivities = getActivitiesForDate(date)
                                     return (
-                                        <div key={date} className="border-l-2 border-secondary/30 pl-4">
-                                            <div className="text-sm font-medium text-secondary mb-2">{formatDate(date)}</div>
+                                        <div key={date}>
+                                            <p className="text-sm font-medium text-slate-600 mb-2">{formatDate(date)}</p>
                                             {dayActivities.length === 0 ? (
-                                                <p className="text-text-muted text-sm">Free day</p>
+                                                <div className="p-3 rounded-lg bg-slate-50 text-slate-400 text-sm">
+                                                    Free day
+                                                </div>
                                             ) : (
                                                 <div className="space-y-2">
                                                     {dayActivities.map((da) => (
                                                         <div
                                                             key={da.id}
-                                                            className="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50"
+                                                            className="flex items-center justify-between p-3 rounded-lg bg-slate-50"
                                                         >
                                                             <div className="flex items-center gap-3">
-                                                                <span className="badge badge-secondary">
+                                                                <span className="px-2 py-0.5 rounded bg-slate-200 text-slate-600 text-xs font-medium">
                                                                     {da.activity.category}
                                                                 </span>
-                                                                <span className="text-text-primary">{da.activity.name}</span>
+                                                                <span className="text-slate-700">{da.activity.name}</span>
                                                             </div>
-                                                            <div className="flex items-center gap-4 text-sm text-text-secondary">
+                                                            <div className="flex items-center gap-4 text-sm text-slate-500">
                                                                 <span className="flex items-center gap-1">
                                                                     <Clock className="w-3 h-3" />
                                                                     {da.activity.durationHours}h
                                                                 </span>
-                                                                <span className="text-success">${da.activity.avgCost}</span>
+                                                                <span className="font-medium text-slate-700">${da.activity.avgCost}</span>
                                                             </div>
                                                         </div>
                                                     ))}
@@ -169,8 +182,8 @@ export default function PublicTrip() {
 
                 {/* Footer */}
                 <div className="text-center py-8">
-                    <p className="text-text-muted text-sm">
-                        Planned with <span className="text-primary font-semibold">GlobeTrotter</span>
+                    <p className="text-slate-400 text-sm">
+                        Planned with <span className="font-semibold text-slate-500">GlobeTrotter</span>
                     </p>
                 </div>
             </div>

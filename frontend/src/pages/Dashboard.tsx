@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { tripsApi } from '../services/api'
 import { Trip } from '../types'
-import { Plus, MapPin, Calendar, Trash2, Eye, DollarSign, ChevronRight } from 'lucide-react'
+import { Plus, MapPin, Calendar, Trash2, DollarSign } from 'lucide-react'
 
 export default function Dashboard() {
     const navigate = useNavigate()
@@ -34,7 +34,7 @@ export default function Dashboard() {
     })
 
     const formatDate = (dateStr: string) => {
-        return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     }
 
     const getDurationDays = (start: string, end: string) => {
@@ -44,18 +44,18 @@ export default function Dashboard() {
 
     return (
         <div className="animate-fade-in">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            {/* Header - Clean and simple */}
+            <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-text-primary">My Trips</h1>
-                    <p className="text-text-secondary mt-1">Plan and manage your adventures</p>
+                    <h1 className="text-2xl font-semibold text-slate-800">My Trips</h1>
+                    <p className="text-slate-500 mt-1">Plan and manage your adventures</p>
                 </div>
                 <button
                     onClick={() => setShowCreateModal(true)}
                     className="btn-primary flex items-center gap-2"
                 >
-                    <Plus className="w-5 h-5" />
-                    New Trip
+                    <Plus className="w-4 h-4" />
+                    Create Trip
                 </button>
             </div>
 
@@ -63,24 +63,22 @@ export default function Dashboard() {
             {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {[1, 2, 3].map((i) => (
-                        <div key={i} className="card h-64 animate-pulse">
-                            <div className="h-32 bg-gray-100 rounded-t-xl" />
-                            <div className="p-4 space-y-3">
-                                <div className="h-4 bg-gray-100 rounded w-3/4" />
-                                <div className="h-3 bg-gray-50 rounded w-1/2" />
-                            </div>
+                        <div key={i} className="card p-6 animate-pulse">
+                            <div className="h-4 bg-slate-100 rounded w-3/4 mb-3" />
+                            <div className="h-3 bg-slate-50 rounded w-1/2 mb-4" />
+                            <div className="h-8 bg-slate-50 rounded" />
                         </div>
                     ))}
                 </div>
             ) : data?.length === 0 ? (
-                <div className="card p-12 text-center">
-                    <div className="w-20 h-20 rounded-full bg-secondary/10 flex items-center justify-center mx-auto mb-4">
-                        <MapPin className="w-10 h-10 text-secondary" />
+                <div className="card p-12 text-center max-w-md mx-auto">
+                    <div className="w-16 h-16 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
+                        <MapPin className="w-8 h-8 text-slate-400" />
                     </div>
-                    <h3 className="text-xl font-semibold text-text-primary mb-2">No trips yet</h3>
-                    <p className="text-text-secondary mb-6">Create your first trip to start planning your adventure</p>
+                    <h3 className="text-lg font-medium text-slate-800 mb-2">No trips yet</h3>
+                    <p className="text-slate-500 mb-6">Create your first trip to start planning</p>
                     <button onClick={() => setShowCreateModal(true)} className="btn-primary">
-                        Create Your First Trip
+                        Create Trip
                     </button>
                 </div>
             ) : (
@@ -88,102 +86,84 @@ export default function Dashboard() {
                     {data?.map((trip) => (
                         <div
                             key={trip.id}
-                            className="card card-hover overflow-hidden group cursor-pointer"
+                            className="card p-5 cursor-pointer hover:shadow-card-hover transition-shadow duration-200"
                             onClick={() => navigate(`/trips/${trip.id}`)}
                         >
                             {/* Trip Header */}
-                            <div className="h-32 bg-gradient-to-br from-secondary/20 to-accent/20 relative overflow-hidden">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="text-6xl opacity-30">✈️</div>
-                                </div>
-                                {trip.isPublic && (
-                                    <div className="absolute top-3 right-3 badge badge-success flex items-center gap-1">
-                                        <Eye className="w-3 h-3" />
-                                        Public
-                                    </div>
-                                )}
+                            <div className="mb-4">
+                                <h3 className="text-lg font-semibold text-slate-800 mb-1 line-clamp-1">
+                                    {trip.name}
+                                </h3>
+                                <p className="text-sm text-slate-500">
+                                    {formatDate(trip.startDate)} – {formatDate(trip.endDate)} · {getDurationDays(trip.startDate, trip.endDate)} days
+                                </p>
                             </div>
 
-                            {/* Trip Content */}
-                            <div className="p-4">
-                                <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-secondary transition-colors flex items-center gap-2">
-                                    {trip.name}
-                                    <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                </h3>
-
-                                <div className="space-y-2 text-sm text-text-secondary">
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="w-4 h-4" />
-                                        <span>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="w-4 h-4" />
-                                        <span>{trip.stops?.length || 0} cities • {getDurationDays(trip.startDate, trip.endDate)} days</span>
-                                    </div>
-                                </div>
-
-                                {/* Cities Preview */}
-                                {trip.stops && trip.stops.length > 0 && (
-                                    <div className="mt-3 flex flex-wrap gap-1">
+                            {/* Cities */}
+                            <div className="mb-4">
+                                {trip.stops && trip.stops.length > 0 ? (
+                                    <div className="flex flex-wrap gap-1.5">
                                         {trip.stops.slice(0, 3).map((stop) => (
                                             <span
                                                 key={stop.id}
-                                                className="badge badge-secondary"
+                                                className="px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-xs font-medium"
                                             >
                                                 {stop.city.name}
                                             </span>
                                         ))}
                                         {trip.stops.length > 3 && (
-                                            <span className="badge bg-gray-100 text-text-muted">
-                                                +{trip.stops.length - 3} more
+                                            <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-500 text-xs">
+                                                +{trip.stops.length - 3}
                                             </span>
                                         )}
                                     </div>
+                                ) : (
+                                    <span className="text-xs text-slate-400">No cities added</span>
                                 )}
+                            </div>
 
-                                {/* Actions */}
-                                <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                                    <div className="flex gap-2">
-                                        <Link
-                                            to={`/trips/${trip.id}/calendar`}
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="icon-btn"
-                                            title="Calendar View"
-                                        >
-                                            <Calendar className="w-4 h-4" />
-                                        </Link>
-                                        <Link
-                                            to={`/trips/${trip.id}/budget`}
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="icon-btn hover:text-accent hover:bg-accent/10"
-                                            title="Budget View"
-                                        >
-                                            <DollarSign className="w-4 h-4" />
-                                        </Link>
-                                    </div>
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            if (confirm('Delete this trip?')) {
-                                                deleteMutation.mutate(trip.id)
-                                            }
-                                        }}
-                                        className="icon-btn icon-btn-danger"
+                            {/* Actions */}
+                            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+                                <div className="flex gap-1">
+                                    <Link
+                                        to={`/trips/${trip.id}/calendar`}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors"
+                                        title="Calendar"
                                     >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
+                                        <Calendar className="w-4 h-4" />
+                                    </Link>
+                                    <Link
+                                        to={`/trips/${trip.id}/budget`}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-50 transition-colors"
+                                        title="Budget"
+                                    >
+                                        <DollarSign className="w-4 h-4" />
+                                    </Link>
                                 </div>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        if (confirm('Delete this trip?')) {
+                                            deleteMutation.mutate(trip.id)
+                                        }
+                                    }}
+                                    className="p-2 rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
                             </div>
                         </div>
                     ))}
                 </div>
             )}
 
-            {/* Create Modal */}
+            {/* Create Modal - Simplified */}
             {showCreateModal && (
-                <div className="fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4">
+                <div className="fixed inset-0 bg-black/20 backdrop-blur-sm flex items-center justify-center z-50 p-4">
                     <div className="card p-6 w-full max-w-md animate-slide-up">
-                        <h2 className="text-2xl font-bold text-text-primary mb-6">Create New Trip</h2>
+                        <h2 className="text-xl font-semibold text-slate-800 mb-6">Create New Trip</h2>
 
                         <form
                             onSubmit={(e) => {
@@ -193,31 +173,31 @@ export default function Dashboard() {
                             className="space-y-4"
                         >
                             <div>
-                                <label className="block text-sm font-medium text-text-primary mb-2">Trip Name</label>
+                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Trip Name</label>
                                 <input
                                     type="text"
                                     value={newTrip.name}
                                     onChange={(e) => setNewTrip({ ...newTrip, name: e.target.value })}
                                     className="input-field"
-                                    placeholder="European Adventure"
+                                    placeholder="e.g. Summer in Europe"
                                     required
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-text-primary mb-2">Description (optional)</label>
+                                <label className="block text-sm font-medium text-slate-700 mb-1.5">Description</label>
                                 <textarea
                                     value={newTrip.description}
                                     onChange={(e) => setNewTrip({ ...newTrip, description: e.target.value })}
                                     className="input-field resize-none"
-                                    placeholder="A journey through the best of Europe..."
+                                    placeholder="Optional description"
                                     rows={2}
                                 />
                             </div>
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-text-primary mb-2">Start Date</label>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Start</label>
                                     <input
                                         type="date"
                                         value={newTrip.startDate}
@@ -227,7 +207,7 @@ export default function Dashboard() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-text-primary mb-2">End Date</label>
+                                    <label className="block text-sm font-medium text-slate-700 mb-1.5">End</label>
                                     <input
                                         type="date"
                                         value={newTrip.endDate}
@@ -238,7 +218,7 @@ export default function Dashboard() {
                                 </div>
                             </div>
 
-                            <div className="flex gap-3 pt-4">
+                            <div className="flex gap-3 pt-2">
                                 <button
                                     type="button"
                                     onClick={() => setShowCreateModal(false)}
@@ -251,7 +231,7 @@ export default function Dashboard() {
                                     disabled={createMutation.isPending}
                                     className="flex-1 btn-primary"
                                 >
-                                    {createMutation.isPending ? 'Creating...' : 'Create Trip'}
+                                    {createMutation.isPending ? 'Creating...' : 'Create'}
                                 </button>
                             </div>
                         </form>
