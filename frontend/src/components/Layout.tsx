@@ -34,8 +34,16 @@ export default function Layout() {
                                 <Home className="w-4 h-4" />
                                 <span className="font-medium text-sm">Dashboard</span>
                             </Link>
-
-                            {/* Add more links here later, pill shaped */}
+                            <Link
+                                to="/profile"
+                                className={`flex items-center gap-2 px-6 py-2 rounded-full transition-all duration-300 ${location.pathname === '/profile'
+                                    ? 'bg-primary text-white shadow-md'
+                                    : 'text-secondary hover:text-primary hover:bg-white/50'
+                                    }`}
+                            >
+                                <User className="w-4 h-4" />
+                                <span className="font-medium text-sm">Profile</span>
+                            </Link>
                         </div>
 
                         {/* User Menu */}
