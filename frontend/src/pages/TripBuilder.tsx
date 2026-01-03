@@ -96,38 +96,38 @@ export default function TripBuilder() {
     }
 
     if (!trip) {
-        return <div className="text-center text-text-secondary py-12">Trip not found</div>
+        return <div className="text-center text-slate-500 py-12">Trip not found</div>
     }
 
     return (
         <div className="animate-fade-in">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+            <div className="flex justify-between items-center mb-8">
                 <div className="flex items-center gap-4">
-                    <Link to="/" className="icon-btn">
+                    <Link to="/" className="p-2 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors">
                         <ArrowLeft className="w-5 h-5" />
                     </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-text-primary">{trip.name}</h1>
-                        <p className="text-text-secondary text-sm">
-                            {formatDate(trip.startDate)} - {formatDate(trip.endDate)}
+                        <h1 className="text-xl font-semibold text-slate-800">{trip.name}</h1>
+                        <p className="text-slate-500 text-sm">
+                            {formatDate(trip.startDate)} – {formatDate(trip.endDate)}
                         </p>
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <Link to={`/trips/${id}/calendar`} className="btn-ghost flex items-center gap-2 px-4 py-2">
+                    <Link to={`/trips/${id}/calendar`} className="btn-ghost flex items-center gap-2">
                         <Calendar className="w-4 h-4" />
                         Calendar
                     </Link>
-                    <Link to={`/trips/${id}/budget`} className="btn-ghost flex items-center gap-2 px-4 py-2">
+                    <Link to={`/trips/${id}/budget`} className="btn-ghost flex items-center gap-2">
                         <DollarSign className="w-4 h-4" />
                         Budget
                     </Link>
                     <button
                         onClick={() => publishMutation.mutate()}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${trip.isPublic
-                                ? 'bg-success/10 text-success'
-                                : 'btn-accent'
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${trip.isPublic
+                                ? 'bg-emerald-50 text-emerald-600'
+                                : 'btn-primary'
                             }`}
                     >
                         {trip.isPublic ? <Check className="w-4 h-4" /> : <Share2 className="w-4 h-4" />}
@@ -139,20 +139,20 @@ export default function TripBuilder() {
             {/* City Stops */}
             <div className="mb-8">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-semibold text-text-primary">Cities</h2>
+                    <h2 className="text-lg font-medium text-slate-700">Cities</h2>
                     <button
                         onClick={() => setShowCitySearch(true)}
-                        className="btn-accent flex items-center gap-2 px-3 py-1.5 text-sm"
+                        className="btn-primary text-sm px-3 py-1.5"
                     >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-4 h-4 mr-1 inline" />
                         Add City
                     </button>
                 </div>
 
                 {trip.stops.length === 0 ? (
                     <div className="card p-8 text-center">
-                        <MapPin className="w-12 h-12 text-text-muted mx-auto mb-3" />
-                        <p className="text-text-secondary">No cities added yet. Start by adding your first destination!</p>
+                        <MapPin className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+                        <p className="text-slate-500">No cities added yet</p>
                     </div>
                 ) : (
                     <div className="space-y-4">
@@ -160,18 +160,18 @@ export default function TripBuilder() {
                             <div key={stop.id} className="card overflow-hidden">
                                 {/* Stop Header */}
                                 <div
-                                    className="p-4 cursor-pointer hover:bg-gray-50 transition-all"
+                                    className="p-4 cursor-pointer hover:bg-slate-50 transition-colors"
                                     onClick={() => setExpandedStop(expandedStop === stop.id ? null : stop.id)}
                                 >
                                     <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-lg font-bold text-secondary">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-sm font-semibold text-slate-600">
                                                 {index + 1}
                                             </div>
                                             <div>
-                                                <h3 className="font-semibold text-text-primary">{stop.city.name}</h3>
-                                                <p className="text-sm text-text-secondary">
-                                                    {stop.city.country} • {formatDate(stop.startDate)} - {formatDate(stop.endDate)}
+                                                <h3 className="font-medium text-slate-800">{stop.city.name}</h3>
+                                                <p className="text-sm text-slate-500">
+                                                    {stop.city.country} · {formatDate(stop.startDate)} – {formatDate(stop.endDate)}
                                                 </p>
                                             </div>
                                         </div>
