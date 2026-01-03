@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { Globe, LogOut, Home } from 'lucide-react'
+import { Globe, LogOut, Home, User } from 'lucide-react'
 
 export default function Layout() {
     const { user, logout } = useAuth()
@@ -25,12 +25,23 @@ export default function Layout() {
                             <Link
                                 to="/"
                                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${location.pathname === '/'
-                                        ? 'nav-active'
-                                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                                    ? 'nav-active'
+                                    : 'text-white/70 hover:text-white hover:bg-white/10'
                                     }`}
                             >
                                 <Home className="w-4 h-4" />
                                 <span className="hidden sm:inline">Dashboard</span>
+                            </Link>
+
+                            <Link
+                                to="/profile"
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${location.pathname === '/profile'
+                                    ? 'nav-active'
+                                    : 'text-white/70 hover:text-white hover:bg-white/10'
+                                    }`}
+                            >
+                                <User className="w-4 h-4" />
+                                <span className="hidden sm:inline">Profile</span>
                             </Link>
 
                             {/* User Menu */}
