@@ -206,11 +206,4 @@ export const publicApi = {
     getTrip: (id: string) => api.get(`/public/${id}`),
 }
 
-// Profile API
-export const profileApi = {
-    get: () => api.get('/profile'),
-    update: (data: { name?: string; email?: string }) => api.put('/profile', data),
-    delete: (password: string) => api.delete('/profile', { data: { password } }),
-}
-
 export default api

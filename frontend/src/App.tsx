@@ -8,7 +8,6 @@ import TripBuilder from './pages/TripBuilder'
 import CalendarView from './pages/CalendarView'
 import BudgetView from './pages/BudgetView'
 import PublicTrip from './pages/PublicTrip'
-import Profile from './pages/Profile'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const { isAuthenticated, isLoading } = useAuth()
@@ -44,7 +43,6 @@ function App() {
                 <Route path="trips/:id" element={<TripBuilder />} />
                 <Route path="trips/:id/calendar" element={<CalendarView />} />
                 <Route path="trips/:id/budget" element={<BudgetView />} />
-                <Route path="profile" element={<Profile />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/" replace />} />

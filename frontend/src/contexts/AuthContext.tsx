@@ -4,7 +4,6 @@ import { authApi, tokenManager } from '../services/api'
 interface User {
     id: string
     email: string
-    name?: string
 }
 
 interface AuthContextType {
