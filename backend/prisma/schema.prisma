@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(uuid())
+  email          String          @unique
+  passwordHash   String
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  trips          Trip[]
+  refreshTokens  RefreshToken[]
+  passwordResets PasswordReset[]
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+}
+
+model TokenBlacklist {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+}
+
+model Trip {
+  id          String        @id @default(uuid())
+  userId      String
+  name        String
+  description String?
+  startDate   DateTime
+  endDate     DateTime
+  isPublic    Boolean       @default(false)
+  createdAt   DateTime      @default(now())
+  user        User          @relation(fields: [userId], references: [id])
+  stops       TripStop[]
+  activities  DayActivity[]
+  publicTrip  PublicTrip?
+
+  @@index([userId])
+}
+
+model City {
+  id              String     @id @default(uuid())
+  name            String
+  country         String
+  costIndex       Float      @default(1.0)
+  popularityScore Int        @default(50)
+  imageUrl        String?
+  stops           TripStop[]
+  activities      Activity[]
+}
+
+model TripStop {
+  id        String   @id @default(uuid())
+  tripId    String
+  cityId    String
+  startDate DateTime
+  endDate   DateTime
+  stopOrder Int
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  city      City     @relation(fields: [cityId], references: [id])
+
+  @@index([tripId])
+}
+
+model Activity {
+  id            String        @id @default(uuid())
+  cityId        String
+  name          String
+  category      String
+  description   String?
+  durationHours Float
+  avgCost       Float
+  imageUrl      String?
+  city          City          @relation(fields: [cityId], references: [id])
+  dayActivities DayActivity[]
+
+  @@index([cityId])
+}
+
+model DayActivity {
+  id         String   @id @default(uuid())
+  tripId     String
+  activityId String
+  date       DateTime
+  timeSlot   String?
+  trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  activity   Activity @relation(fields: [activityId], references: [id])
+
+  @@index([tripId])
+}
+
+model PublicTrip {
+  id           String   @id @default(uuid())
+  tripId       String   @unique
+  snapshotJson String
+  createdAt    DateTime @default(now())
+  trip         Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+}
