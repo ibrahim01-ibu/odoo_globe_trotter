@@ -32,43 +32,50 @@ export default function Login() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-bg">
-            <div className="card p-8 w-full max-w-md animate-fade-in shadow-lg">
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <div className="card max-w-md w-full p-8 bg-white/80 backdrop-blur-xl shadow-2xl animate-fade-in relative overflow-hidden">
+                {/* Decorative blob */}
+                <div className="absolute -top-20 -right-20 w-40 h-40 bg-teal-100 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+                <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-100 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+
                 {/* Logo */}
-                <div className="flex flex-col items-center mb-8">
-                    <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mb-4 shadow-lg">
+                <div className="flex flex-col items-center mb-8 relative">
+                    <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center mb-4 shadow-lg shadow-teal-200">
                         <Globe className="w-9 h-9 text-white" />
                     </div>
-                    <h1 className="text-3xl font-bold text-text-primary">GlobeTrotter</h1>
-                    <p className="text-text-secondary mt-2">Plan your perfect adventure</p>
+                    <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600 font-display">
+                        GlobeTrotter
+                    </h1>
+                    <p className="text-slate-500 mt-2 font-medium">Plan your perfect adventure</p>
                 </div>
 
                 {/* Demo button */}
                 <button
                     onClick={fillDemo}
-                    className="w-full mb-6 py-3 px-4 rounded-lg bg-accent/10 border border-accent/30 text-accent font-medium flex items-center justify-center gap-2 hover:bg-accent/20 transition-all group"
+                    className="w-full mb-8 py-3 px-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-700 font-medium flex items-center justify-center gap-2 hover:bg-amber-100 transition-all group shadow-sm hover:shadow-md"
                 >
-                    <Sparkles className="w-4 h-4" />
+                    <Sparkles className="w-4 h-4 text-amber-500" />
                     Try Demo Account
                 </button>
 
                 {/* Form */}
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-5 relative">
                     {error && (
-                        <div className="p-3 rounded-lg bg-danger/10 border border-danger/30 text-danger text-sm">
+                        <div className="p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm flex items-center gap-2">
+                            <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
                             {error}
                         </div>
                     )}
 
                     <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">Email</label>
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
+                        <div className="relative group">
+                            <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-500 transition-colors" />
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="input-field pl-11"
+                                className="input-field pl-11 py-3"
                                 placeholder="you@example.com"
                                 required
                             />
@@ -76,14 +83,14 @@ export default function Login() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-text-primary mb-2">Password</label>
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
+                        <div className="relative group">
+                            <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-teal-500 transition-colors" />
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="input-field pl-11"
+                                className="input-field pl-11 py-3"
                                 placeholder="••••••••"
                                 required
                             />
@@ -93,22 +100,22 @@ export default function Login() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="btn-primary w-full flex items-center justify-center gap-2"
+                        className="btn-primary w-full flex items-center justify-center gap-2 py-3.5 text-base shadow-lg shadow-teal-200/50 mt-2"
                     >
                         {isLoading ? (
                             <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-white" />
                         ) : (
                             <>
                                 Sign In
-                                <ArrowRight className="w-4 h-4" />
+                                <ArrowRight className="w-5 h-5" />
                             </>
                         )}
                     </button>
                 </form>
 
-                <p className="text-center text-text-secondary mt-6">
+                <p className="text-center text-slate-500 mt-8">
                     Don't have an account?{' '}
-                    <Link to="/signup" className="text-secondary hover:text-secondary-dark font-medium">
+                    <Link to="/signup" className="text-teal-600 hover:text-teal-700 font-semibold hover:underline">
                         Sign up
                     </Link>
                 </p>

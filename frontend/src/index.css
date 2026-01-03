@@ -1,149 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ============================================
-   GlobeTrotter Professional Design System
+   GlobeTrotter Design System
    ============================================ */
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  --primary: #2FA4A9;
+  --primary-dark: #237D81;
+  --secondary: #64748B;
+  --bg-main: #F8FAFC;
+  --card-bg: #FFFFFF;
 }
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background-color: #F7F9FC;
-  min-height: 100vh;
+  background-color: var(--bg-main);
   color: #1E293B;
   -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(47, 164, 169, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+  background-attachment: fixed;
 }
 
 /* ============================================
-   Typography
-   ============================================ */
-
-.heading-primary {
-  color: #1E293B;
-  font-weight: 600;
-}
-
-.heading-secondary {
-  color: #3B5B8A;
-  font-weight: 500;
-}
-
-.text-body {
-  color: #1E293B;
-}
-
-.text-secondary {
-  color: #64748B;
-}
-
-.text-muted {
-  color: #94A3B8;
-}
-
-/* ============================================
-   Card System - Professional & Clean
+   Card System
    ============================================ */
 
 .card {
-  background: #FFFFFF;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: var(--card-bg);
+  border-radius: 1rem;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02), 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
 }
 
 .card-hover:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
-  transition: all 0.2s ease;
+  transform: translateY(-4px);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.02), 0 12px 24px -4px rgba(47, 164, 169, 0.15);
 }
 
 /* ============================================
    Button Hierarchy
    ============================================ */
 
-/* Primary Button - Midnight Blue */
 .btn-primary {
-  background-color: #0F2A44;
+  background: linear-gradient(135deg, #2FA4A9 0%, #237D81 100%);
   color: #FFFFFF;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 9999px;
+  /* Pill shape */
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(47, 164, 169, 0.25);
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-primary:hover {
-  background-color: #1a3a5c;
-  box-shadow: 0 4px 12px rgba(15, 42, 68, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(47, 164, 169, 0.35);
+  filter: brightness(1.05);
 }
 
-.btn-primary:disabled {
-  background-color: #94A3B8;
-  cursor: not-allowed;
+.btn-primary:active {
+  transform: translateY(0);
 }
 
-/* Secondary Button - Outlined Slate Blue */
 .btn-secondary {
-  background-color: transparent;
-  color: #3B5B8A;
+  background: #FFFFFF;
+  color: #334155;
   font-weight: 500;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  border: 1.5px solid #3B5B8A;
+  border-radius: 9999px;
+  border: 1px solid #E2E8F0;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-  background-color: rgba(59, 91, 138, 0.08);
+  background-color: #F8FAFC;
+  border-color: #CBD5E1;
+  color: #0F172A;
 }
 
-/* Accent Button - Teal Green (for Add/Success actions) */
-.btn-accent {
-  background-color: #2FA4A9;
-  color: #FFFFFF;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-accent:hover {
-  background-color: #258a8e;
-  box-shadow: 0 4px 12px rgba(47, 164, 169, 0.25);
-}
-
-/* Destructive Button */
-.btn-danger {
-  background-color: #EF4444;
-  color: #FFFFFF;
-  font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-danger:hover {
-  background-color: #dc2626;
-}
-
-/* Ghost Button */
 .btn-ghost {
-  background-color: transparent;
+  background: transparent;
   color: #64748B;
   font-weight: 500;
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   border: none;
   cursor: pointer;
@@ -151,29 +102,30 @@ body {
 }
 
 .btn-ghost:hover {
-  background-color: rgba(0, 0, 0, 0.04);
-  color: #1E293B;
+  background-color: rgba(0, 0, 0, 0.03);
+  color: #0F172A;
 }
 
 /* ============================================
-   Input Styling - Light Theme
+   Input Styling
    ============================================ */
 
 .input-field {
   background: #FFFFFF;
-  border: 1.5px solid #E2E8F0;
-  border-radius: 0.5rem;
-  padding: 0.75rem 1rem;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  border-radius: 0.75rem;
+  padding: 0.875rem 1rem;
   color: #1E293B;
   width: 100%;
   transition: all 0.2s ease;
-  font-size: 0.9375rem;
+  font-size: 0.95rem;
 }
 
 .input-field:focus {
   outline: none;
-  border-color: #3B5B8A;
-  box-shadow: 0 0 0 3px rgba(59, 91, 138, 0.12);
+  border-color: #2FA4A9;
+  box-shadow: 0 0 0 4px rgba(47, 164, 169, 0.1);
 }
 
 .input-field::placeholder {
@@ -181,150 +133,55 @@ body {
 }
 
 /* ============================================
-   Badge / Tag System
-   ============================================ */
-
-.badge {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.25rem 0.625rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.badge-primary {
-  background-color: rgba(15, 42, 68, 0.1);
-  color: #0F2A44;
-}
-
-.badge-secondary {
-  background-color: rgba(59, 91, 138, 0.1);
-  color: #3B5B8A;
-}
-
-.badge-accent {
-  background-color: rgba(47, 164, 169, 0.12);
-  color: #258a8e;
-}
-
-.badge-success {
-  background-color: rgba(34, 197, 94, 0.12);
-  color: #16a34a;
-}
-
-.badge-warning {
-  background-color: rgba(245, 158, 11, 0.12);
-  color: #d97706;
-}
-
-.badge-danger {
-  background-color: rgba(239, 68, 68, 0.12);
-  color: #dc2626;
-}
-
-/* ============================================
-   Navbar - Midnight Blue Background
+   Navbar
    ============================================ */
 
 .navbar {
-  background-color: #0F2A44;
-  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   position: sticky;
   top: 0;
   z-index: 50;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
 }
 
-.navbar a {
-  color: rgba(255, 255, 255, 0.85);
-  transition: color 0.2s ease;
-}
-
-.navbar a:hover {
-  color: #FFFFFF;
-}
-
-.navbar .nav-active {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
-}
-
-/* ============================================
-   Calendar City Tinting (Translucent)
-   ============================================ */
-
-.city-tint-1 {
-  background-color: rgba(59, 91, 138, 0.15);
-}
-
-.city-tint-2 {
-  background-color: rgba(47, 164, 169, 0.15);
-}
-
-.city-tint-3 {
-  background-color: rgba(15, 42, 68, 0.12);
-}
-
-.city-tint-4 {
-  background-color: rgba(245, 158, 11, 0.12);
-}
-
-.city-tint-5 {
-  background-color: rgba(34, 197, 94, 0.12);
-}
-
-/* ============================================
-   FullCalendar Overrides - Light Theme
-   ============================================ */
-
-.fc {
-  --fc-border-color: #E2E8F0;
-  --fc-button-bg-color: #0F2A44;
-  --fc-button-border-color: #0F2A44;
-  --fc-button-hover-bg-color: #1a3a5c;
-  --fc-button-hover-border-color: #1a3a5c;
-  --fc-button-active-bg-color: #091c2e;
-  --fc-today-bg-color: rgba(47, 164, 169, 0.08);
-  --fc-event-bg-color: #3B5B8A;
-  --fc-event-border-color: transparent;
-  --fc-page-bg-color: #FFFFFF;
-}
-
-.fc .fc-daygrid-day-number,
-.fc .fc-col-header-cell-cushion {
-  color: #1E293B;
-}
-
-.fc-theme-standard td,
-.fc-theme-standard th {
-  border-color: #E2E8F0;
-}
-
-.fc .fc-button {
+.nav-link {
+  color: #64748B;
   font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
 }
 
-.fc .fc-toolbar-title {
-  color: #1E293B;
+.nav-link:hover {
+  color: #2FA4A9;
+  background-color: rgba(47, 164, 169, 0.05);
+}
+
+.nav-active {
+  color: #2FA4A9;
+  background-color: rgba(47, 164, 169, 0.1);
   font-weight: 600;
 }
 
 /* ============================================
-   Scrollbar Styling - Light
+   Scrollbar
    ============================================ */
 
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -332,102 +189,17 @@ body {
 }
 
 /* ============================================
-   Utility Classes
+   Utilities
    ============================================ */
 
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out;
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-.animate-slide-up {
-  animation: slideUp 0.25s ease-out;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Modal Overlay */
-.modal-overlay {
-  background-color: rgba(15, 42, 68, 0.5);
-  backdrop-filter: blur(4px);
-}
-
-/* Icon Button */
-.icon-btn {
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  background-color: transparent;
-  color: #64748B;
-  transition: all 0.2s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.icon-btn:hover {
-  background-color: rgba(0, 0, 0, 0.04);
-  color: #1E293B;
-}
-
-.icon-btn-danger:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
-}
-
-/* Section divider - using whitespace, not borders */
-.section-gap {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
-/* Status indicators */
-.status-success {
-  color: #22C55E;
-}
-
-.status-warning {
-  color: #F59E0B;
-}
-
-.status-danger {
-  color: #EF4444;
-}
-
-/* Progress bar */
-.progress-bar {
-  background-color: #E2E8F0;
-  border-radius: 9999px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  background-color: #2FA4A9;
-  height: 100%;
-  transition: width 0.3s ease;
-}
-
-.progress-fill-warning {
-  background-color: #F59E0B;
-}
-
-.progress-fill-danger {
-  background-color: #EF4444;
+.text-gradient {
+  background: linear-gradient(135deg, #2FA4A9 0%, #237D81 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

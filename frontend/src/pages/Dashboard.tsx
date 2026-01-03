@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { tripsApi } from '../services/api'
 import { Trip } from '../types'
-import { Plus, MapPin, Calendar, Trash2, Eye, DollarSign, ChevronRight } from 'lucide-react'
+import { Plus, MapPin, Calendar, Trash2, Eye, DollarSign } from 'lucide-react'
 
 export default function Dashboard() {
     const navigate = useNavigate()
@@ -47,15 +47,17 @@ export default function Dashboard() {
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl font-bold text-text-primary">My Trips</h1>
-                    <p className="text-text-secondary mt-1">Plan and manage your adventures</p>
+                    <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600 font-display">
+                        My Adventures
+                    </h1>
+                    <p className="text-secondary mt-2 text-lg">Where will you go next?</p>
                 </div>
                 <button
                     onClick={() => setShowCreateModal(true)}
-                    className="btn-primary flex items-center gap-2"
+                    className="btn-primary flex items-center gap-2 group"
                 >
-                    <Plus className="w-5 h-5" />
-                    New Trip
+                    <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+                    Start New Journey
                 </button>
             </div>
 
@@ -84,95 +86,107 @@ export default function Dashboard() {
                     </button>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {data?.map((trip) => (
                         <div
                             key={trip.id}
-                            className="card card-hover overflow-hidden group cursor-pointer"
+                            className="card card-hover group cursor-pointer relative bg-white pb-2"
                             onClick={() => navigate(`/trips/${trip.id}`)}
                         >
-                            {/* Trip Header */}
-                            <div className="h-32 bg-gradient-to-br from-secondary/20 to-accent/20 relative overflow-hidden">
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="text-6xl opacity-30">✈️</div>
+                            {/* Trip Image / Placeholder */}
+                            <div className="h-40 bg-gradient-to-br from-teal-50 to-blue-50 relative overflow-hidden rounded-t-2xl">
+                                <div className="absolute inset-0 flex items-center justify-center text-6xl opacity-20 transform group-hover:scale-110 transition-transform duration-700">
+                                    ✈️
                                 </div>
-                                {trip.isPublic && (
-                                    <div className="absolute top-3 right-3 badge badge-success flex items-center gap-1">
-                                        <Eye className="w-3 h-3" />
-                                        Public
-                                    </div>
-                                )}
+
+                                {/* Status Badge */}
+                                <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-teal-700 shadow-sm border border-teal-100 flex items-center gap-1">
+                                    {trip.isPublic ? <Eye className="w-3 h-3" /> : null}
+                                    {trip.isPublic ? 'Public' : 'Private'}
+                                </div>
+
+                                {/* Duration Badge */}
+                                <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-white shadow-sm flex items-center gap-1.5">
+                                    <Calendar className="w-3 h-3" />
+                                    {getDurationDays(trip.startDate, trip.endDate)} Days
+                                </div>
                             </div>
 
                             {/* Trip Content */}
-                            <div className="p-4">
-                                <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-secondary transition-colors flex items-center gap-2">
+                            <div className="p-5">
+                                <h3 className="text-xl font-bold text-slate-800 mb-1 group-hover:text-primary transition-colors line-clamp-1">
                                     {trip.name}
-                                    <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                                 </h3>
+                                <p className="text-sm text-slate-500 mb-4 line-clamp-2 min-h-[2.5rem]">
+                                    {trip.description || "No description provided."}
+                                </p>
 
-                                <div className="space-y-2 text-sm text-text-secondary">
-                                    <div className="flex items-center gap-2">
-                                        <Calendar className="w-4 h-4" />
-                                        <span>{formatDate(trip.startDate)} - {formatDate(trip.endDate)}</span>
+                                {/* Stats Row */}
+                                <div className="flex items-center gap-4 text-xs font-medium text-slate-500 mb-4 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                                    <div className="flex items-center gap-1.5">
+                                        <MapPin className="w-3.5 h-3.5 text-teal-600" />
+                                        <span>{trip.stops?.length || 0} Stops</span>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <MapPin className="w-4 h-4" />
-                                        <span>{trip.stops?.length || 0} cities • {getDurationDays(trip.startDate, trip.endDate)} days</span>
+                                    <div className="w-[1px] h-3 bg-slate-200"></div>
+                                    <div className="flex items-center gap-1.5">
+                                        <Calendar className="w-3.5 h-3.5 text-blue-500" />
+                                        <span>{new Date(trip.startDate).getFullYear()}</span>
                                     </div>
                                 </div>
 
-                                {/* Cities Preview */}
-                                {trip.stops && trip.stops.length > 0 && (
-                                    <div className="mt-3 flex flex-wrap gap-1">
+                                {/* Cities Pills */}
+                                {trip.stops && trip.stops.length > 0 ? (
+                                    <div className="flex flex-wrap gap-1.5 mb-1">
                                         {trip.stops.slice(0, 3).map((stop) => (
                                             <span
                                                 key={stop.id}
-                                                className="badge badge-secondary"
+                                                className="px-2.5 py-1 rounded-md bg-teal-50 text-teal-700 text-xs font-medium border border-teal-100/50"
                                             >
                                                 {stop.city.name}
                                             </span>
                                         ))}
                                         {trip.stops.length > 3 && (
-                                            <span className="badge bg-gray-100 text-text-muted">
-                                                +{trip.stops.length - 3} more
+                                            <span className="px-2 py-1 rounded-md bg-slate-50 text-slate-500 text-xs font-medium border border-slate-100">
+                                                +{trip.stops.length - 3}
                                             </span>
                                         )}
                                     </div>
+                                ) : (
+                                    <div className="text-xs text-slate-400 italic mb-1 pt-1">No cities added yet</div>
                                 )}
+                            </div>
 
-                                {/* Actions */}
-                                <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
-                                    <div className="flex gap-2">
-                                        <Link
-                                            to={`/trips/${trip.id}/calendar`}
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="icon-btn"
-                                            title="Calendar View"
-                                        >
-                                            <Calendar className="w-4 h-4" />
-                                        </Link>
-                                        <Link
-                                            to={`/trips/${trip.id}/budget`}
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="icon-btn hover:text-accent hover:bg-accent/10"
-                                            title="Budget View"
-                                        >
-                                            <DollarSign className="w-4 h-4" />
-                                        </Link>
-                                    </div>
-                                    <button
-                                        onClick={(e) => {
-                                            e.stopPropagation()
-                                            if (confirm('Delete this trip?')) {
-                                                deleteMutation.mutate(trip.id)
-                                            }
-                                        }}
-                                        className="icon-btn icon-btn-danger"
+                            {/* Actions */}
+                            <div className="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center px-5 pb-3">
+                                <div className="flex gap-2">
+                                    <Link
+                                        to={`/trips/${trip.id}/calendar`}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="icon-btn"
+                                        title="Calendar View"
                                     >
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
+                                        <Calendar className="w-4 h-4" />
+                                    </Link>
+                                    <Link
+                                        to={`/trips/${trip.id}/budget`}
+                                        onClick={(e) => e.stopPropagation()}
+                                        className="icon-btn hover:text-accent hover:bg-accent/10"
+                                        title="Budget View"
+                                    >
+                                        <DollarSign className="w-4 h-4" />
+                                    </Link>
                                 </div>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        if (confirm('Delete this trip?')) {
+                                            deleteMutation.mutate(trip.id)
+                                        }
+                                    }}
+                                    className="icon-btn icon-btn-danger"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -183,7 +197,9 @@ export default function Dashboard() {
             {showCreateModal && (
                 <div className="fixed inset-0 modal-overlay flex items-center justify-center z-50 p-4">
                     <div className="card p-6 w-full max-w-md animate-slide-up">
-                        <h2 className="text-2xl font-bold text-text-primary mb-6">Create New Trip</h2>
+                        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-cyan-600 font-display mb-6">
+                            Create New Trip
+                        </h2>
 
                         <form
                             onSubmit={(e) => {
@@ -193,7 +209,7 @@ export default function Dashboard() {
                             className="space-y-4"
                         >
                             <div>
-                                <label className="block text-sm font-medium text-text-primary mb-2">Trip Name</label>
+                                <label className="block text-sm font-medium text-slate-700 mb-2">Trip Name</label>
                                 <input
                                     type="text"
                                     value={newTrip.name}
@@ -205,7 +221,7 @@ export default function Dashboard() {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-text-primary mb-2">Description (optional)</label>
+                                <label className="block text-sm font-medium text-slate-700 mb-2">Description (optional)</label>
                                 <textarea
                                     value={newTrip.description}
                                     onChange={(e) => setNewTrip({ ...newTrip, description: e.target.value })}
@@ -217,7 +233,7 @@ export default function Dashboard() {
 
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-text-primary mb-2">Start Date</label>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">Start Date</label>
                                     <input
                                         type="date"
                                         value={newTrip.startDate}
@@ -227,7 +243,7 @@ export default function Dashboard() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-text-primary mb-2">End Date</label>
+                                    <label className="block text-sm font-medium text-slate-700 mb-2">End Date</label>
                                     <input
                                         type="date"
                                         value={newTrip.endDate}
