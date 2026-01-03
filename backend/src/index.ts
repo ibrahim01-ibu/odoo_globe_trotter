@@ -8,6 +8,7 @@ import cityRoutes from './routes/cities.js';
 import activityRoutes from './routes/activities.js';
 import budgetRoutes from './routes/budget.js';
 import publicRoutes from './routes/public.js';
+import profileRoutes from './routes/profile.js';
 
 export const prisma = new PrismaClient();
 
@@ -31,6 +32,7 @@ app.use('/cities', cityRoutes);
 app.use('/activities', activityRoutes);
 app.use('/budget', budgetRoutes);
 app.use('/public', publicRoutes);
+app.use('/profile', profileRoutes);
 
 // Error handler
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
